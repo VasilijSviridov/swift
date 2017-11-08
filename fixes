@@ -47,3 +47,9 @@ func getjson(completionHandler:@escaping (Swifter?)->Void) {
                vc.teta = data
                present(vc, animated: true, completion: nil)
            }
+           
+           
+           // How to init data in new view controller
+           //ID View Controller
+           
+           var teta: Swifter?
