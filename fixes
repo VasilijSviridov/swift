@@ -1,0 +1,49 @@
+func getjson(completionHandler:@escaping (Swifter?)->Void) {
+        
+            let url = URL(string: "")!
+            let task = URLSession.shared.dataTask(with:url) { (datak, response, error) -> Void in
+                if let datam = datak {
+                    do {
+                        // dirty dirty =)
+                        let myStructArray = try JSONDecoder().decode(Swifter.self, from: datam)
+                        
+                        
+                        completionHandler(myStructArray)
+                    } catch let error as NSError {
+                        completionHandler(nil)
+                    }
+                } else if let error = error {
+                    completionHandler(nil)
+                }
+            }
+            task.resume()
+    }
+    
+    
+    
+    func checkWeatherDataExists()
+       {
+           indicator.color = UIColor.black
+           indicator.backgroundColor = UIColor.clear
+           indicator.startAnimating()
+           labelText.isHidden = false
+           textForError.isHidden = true
+           buttonToTryAgain.isHidden = true
+           let conn = NetworkManagerRo()
+           conn.getjson(){teta in
+               guard let data = teta else {
+                 self.stopAndShowButton()
+               }
+               self.goToAnotherStoryBoard(data)
+           }
+       }
+       
+       
+       
+       func goToAnotherStoryBoard(data: Swifter)
+           {
+               let storyboard = UIStoryboard(name: "Main", bundle: nil)
+               let vc = storyboard.instantiateViewController(withIdentifier: "ID") as UIViewController
+               vc.teta = data
+               present(vc, animated: true, completion: nil)
+           }
